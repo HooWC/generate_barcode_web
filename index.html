@@ -5,276 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HSA Barcode Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #333;
-            min-height: 100vh;
-            padding: 20px 15px;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        header {
-            text-align: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        h1 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-        
-        .input-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .input-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .input-group {
-            flex: 1;
-            min-width: 250px;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        label {
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-        
-        input {
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        .btn {
-            padding: 16px 25px;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-        
-        .preview-section {
-            text-align: center;
-            padding: 20px;
-            border: 1px dashed #bdc3c7;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-        }
-        
-        .preview-section h3 {
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-        
-        .barcode-container {
-            margin: 15px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 100%;
-            overflow: hidden;
-        }
-        
-        #barcode {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        .info-display {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 10px 0;
-            color: #2c3e50;
-            word-break: break-all;
-        }
-        
-        .download-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 15px;
-            justify-content: center;
-        }
-        
-        .btn-success {
-            background-color: #2ecc71;
-            color: white;
-        }
-        
-        .btn-warning {
-            background-color: #f39c12;
-            color: white;
-        }
-        
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .btn:disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-        
-        .instructions {
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            border-left: 5px solid #3498db;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        .instructions ol {
-            margin-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 8px;
-            line-height: 1.5;
-        }
-        
-        footer {
-            margin-top: 20px;
-            text-align: center;
-            color: white;
-            font-size: 0.9rem;
-        }
-        
-        /* 打印样式 */
-        @media print {
-            body {
-                background: white !important;
-                padding: 0;
-            }
-            
-            .container {
-                box-shadow: none;
-                border-radius: 0;
-                max-width: 100%;
-                padding: 0;
-            }
-            
-            .input-section, .instructions, .download-section, footer, header {
-                display: none !important;
-            }
-            
-            .preview-section {
-                border: none;
-                background: white;
-                padding: 0;
-                margin: 0;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-            
-            .barcode-container {
-                box-shadow: none;
-                border: none;
-                margin: 0 auto;
-                width: 80%;
-                page-break-inside: avoid;
-            }
-            
-            #barcode {
-                transform: scale(1.3);
-            }
-            
-            .info-display {
-                font-size: 1.5rem;
-                margin-top: 30px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .input-row {
-                flex-direction: column;
-            }
-            
-            .input-group {
-                min-width: 100%;
-            }
-            
-            .download-section {
-                flex-direction: column;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
     <div class="container">
@@ -284,37 +15,63 @@
         </header>
         
         <div class="input-section">
+            <div class="barcode-group">
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;">Barcode 1</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="chassisNo1">Chassis No:</label>
+                        <input type="text" id="chassisNo1" placeholder="e.g., FW1EXY-12264" maxlength="30">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="engineNo1">Engine No:</label>
+                        <input type="text" id="engineNo1" placeholder="e.g., K20A-1234567" maxlength="30">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="barcode-group">
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;">Barcode 2</h3>
             <div class="input-row">
                 <div class="input-group">
-                    <label for="chassisNo">Chassis No:</label>
-                    <input type="text" id="chassisNo" placeholder="e.g., FW1EXY-12264" maxlength="30">
+                        <label for="chassisNo2">Chassis No:</label>
+                        <input type="text" id="chassisNo2" placeholder="e.g., FW1EXY-12264" maxlength="30">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="engineNo2">Engine No:</label>
+                        <input type="text" id="engineNo2" placeholder="e.g., K20A-1234567" maxlength="30">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="barcode-group">
+                <h3 style="color: #2c3e50; margin-bottom: 15px; font-size: 1.2rem;">Barcode 3</h3>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="chassisNo3">Chassis No:</label>
+                        <input type="text" id="chassisNo3" placeholder="e.g., FW1EXY-12264" maxlength="30">
                 </div>
                 
                 <div class="input-group">
-                    <label for="engineNo">Engine No:</label>
-                    <input type="text" id="engineNo" placeholder="e.g., K20A-1234567" maxlength="30">
+                        <label for="engineNo3">Engine No:</label>
+                        <input type="text" id="engineNo3" placeholder="e.g., K20A-1234567" maxlength="30">
+                    </div>
                 </div>
             </div>
             
-            <button id="generateBtn" class="btn btn-primary">Generate Barcode</button>
+            <button id="generateBtn" class="btn btn-primary">Generate Barcode(s)</button>
         </div>
         
         <div class="preview-section">
-            
-            <div class="barcode-container">
-                <svg id="barcode"></svg>
-                <div class="info-display" id="previewText"></div>
-            </div>
+            <div id="barcodeContainer"></div>
             
             <div class="download-section">
                 <button id="downloadPNG" class="btn btn-success" disabled>
                     Download PNG Image
                 </button>
                 <button id="printBtn" class="btn btn-warning" disabled>
-                    Print Barcode
-                </button>
-                <button id="downloadPDF" class="btn btn-danger" disabled>
-                    Download PDF Document
+                    Print Barcode(s)
                 </button>
             </div>
         </div>
@@ -324,189 +81,6 @@
         <p>Hong Seng Group &copy; 2025</p>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chassisNoInput = document.getElementById('chassisNo');
-            const engineNoInput = document.getElementById('engineNo');
-            const generateBtn = document.getElementById('generateBtn');
-            const barcodeSvg = document.getElementById('barcode');
-            const previewText = document.getElementById('previewText');
-            const downloadPNG = document.getElementById('downloadPNG');
-            const printBtn = document.getElementById('printBtn');
-            const downloadPDF = document.getElementById('downloadPDF');
-            
-            // Generate barcode
-            generateBtn.addEventListener('click', function() {
-                const chassisNo = chassisNoInput.value.trim();
-                const engineNo = engineNoInput.value.trim();
-                
-                if (!chassisNo || !engineNo) {
-                    alert('Please enter both chassis number and engine number!');
-                    return;
-                }
-                
-                // Clear previous barcode
-                barcodeSvg.innerHTML = '';
-                
-                // Generate barcode with ONLY chassis number
-                try {
-                    JsBarcode(barcodeSvg, chassisNo, {
-                        format: "CODE128",
-                        lineColor: "#000",
-                        width: 2,
-                        height: 120,
-                        displayValue: false
-                    });
-                    
-                    previewText.innerHTML = `
-                        <div style="margin-top: 20px; font-size: 1.4rem;">${chassisNo}</div>
-                        <div style="margin-top: 10px; font-size: 1.4rem;">${engineNo}</div>
-                    `;
-                    
-                    // Enable download buttons
-                    downloadPNG.disabled = false;
-                    printBtn.disabled = false;
-                    downloadPDF.disabled = false;
-                } catch (error) {
-                    alert('Error generating barcode. Please check your input.');
-                    console.error(error);
-                }
-            });
-            
-            // Download PNG image
-            downloadPNG.addEventListener('click', function() {
-                const chassisNo = chassisNoInput.value.trim();
-                const engineNo = engineNoInput.value.trim();
-                if (!chassisNo || !engineNo) return;
-                
-                // Convert SVG to PNG
-                const svgData = new XMLSerializer().serializeToString(barcodeSvg);
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const img = new Image();
-                
-                img.onload = function() {
-                    // Set canvas size for A4 portrait
-                    canvas.width = 1240; // A4 width at 150 DPI
-                    canvas.height = 1754; // A4 height at 150 DPI
-                    
-                    // Fill white background
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    // Calculate positions for A4 layout
-                    const centerX = canvas.width / 2;
-                    
-                    // Draw barcode (centered and scaled)
-                    const barcodeWidth = canvas.width * 0.7;
-                    const barcodeHeight = 300;
-                    const barcodeX = (canvas.width - barcodeWidth) / 2;
-                    const barcodeY = 400;
-                    
-                    ctx.drawImage(img, barcodeX, barcodeY, barcodeWidth, barcodeHeight);
-                    
-                    // Add chassis number below barcode
-                    ctx.fillStyle = '#2c3e50';
-                    ctx.font = 'bold 36px Arial';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(`${chassisNo}`, centerX, barcodeY + barcodeHeight + 80);
-                    
-                    // Add engine number below chassis number
-                    ctx.font = 'bold 36px Arial';
-                    ctx.fillText(`${engineNo}`, centerX, barcodeY + barcodeHeight + 140);
-                    
-                    // Add note about barcode content
-                    ctx.fillStyle = '#7f8c8d';
-                    ctx.font = 'italic 24px Arial';
-                    ctx.fillText('', centerX, barcodeY + barcodeHeight + 200);
-                    
-                    // Create download link
-                    const pngFile = canvas.toDataURL('image/png');
-                    const downloadLink = document.createElement('a');
-                    downloadLink.download = `hsa_barcode_${chassisNo}.png`;
-                    downloadLink.href = pngFile;
-                    downloadLink.click();
-                };
-                
-                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
-            });
-            
-            // Print barcode
-            printBtn.addEventListener('click', function() {
-                window.print();
-            });
-            
-            // Download PDF
-            downloadPDF.addEventListener('click', function() {
-                const chassisNo = chassisNoInput.value.trim();
-                const engineNo = engineNoInput.value.trim();
-                if (!chassisNo || !engineNo) return;
-                
-                // Use jsPDF to generate PDF
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                
-                // Convert SVG to image and add to PDF
-                const svgData = new XMLSerializer().serializeToString(barcodeSvg);
-                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-                const url = URL.createObjectURL(svgBlob);
-                
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    
-                    const imgData = canvas.toDataURL('image/png');
-                    
-                    // Calculate dimensions for A4 paper
-                    const imgWidth = 150; // mm
-                    const imgHeight = 50; // mm
-                    
-                    // Add barcode to PDF (centered horizontally)
-                    const xPos = (210 - imgWidth) / 2;
-                    const yPos = 80; // mm from top
-                    
-                    doc.addImage(imgData, 'PNG', xPos, yPos, imgWidth, imgHeight);
-                    
-                    // Add chassis number below barcode
-                    doc.setFontSize(16);
-                    doc.text(`${chassisNo}`, 105, yPos + imgHeight + 20, { align: 'center' });
-                    
-                    // Add engine number below chassis number
-                    doc.text(`${engineNo}`, 105, yPos + imgHeight + 35, { align: 'center' });
-                    
-                    // Add note about barcode content
-                    doc.setFontSize(10);
-                    doc.setTextColor(127, 140, 141);
-                    doc.text('', 105, yPos + imgHeight + 50, { align: 'center' });
-                    
-                    // Save PDF
-                    doc.save(`hsa_barcode_${chassisNo}.pdf`);
-                    URL.revokeObjectURL(url);
-                };
-                img.src = url;
-            });
-            
-            // Allow Enter key to generate barcode
-            chassisNoInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    generateBtn.click();
-                }
-            });
-            
-            engineNoInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    generateBtn.click();
-                }
-            });
-        });
-    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
